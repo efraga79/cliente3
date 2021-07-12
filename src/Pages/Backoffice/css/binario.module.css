@@ -1,0 +1,123 @@
+.tree2 ul {
+	padding-top: 10px;
+	position: relative;
+	text-align: center;
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+.tree2 li {
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	position: relative;
+	padding: 10px 5px 0 5px;
+
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+.tree2 li::before,
+.tree2 li::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	right: 50%;
+	border-top: 1px solid #ccc;
+	width: 50%;
+	height: 10px;
+}
+
+.tree2 li::after {
+	right: auto;
+	left: 50%;
+	border-left: 1px solid #ccc;
+}
+
+.tree2 li:only-child::after,
+.tree2 li:only-child::before {
+	display: none;
+}
+
+.tree2 li:only-child {
+	padding-top: 0;
+}
+
+.tree2 li:first-child::before,
+.tree2 li:last-child::after {
+	border: 0 none;
+}
+
+.tree2 li:last-child::before {
+	border-right: 1px solid #ccc;
+	border-radius: 0 5px 0 0;
+	-webkit-border-radius: 0 0px 0 0;
+	-moz-border-radius: 0 5px 0 0;
+}
+
+.tree2 li:first-child::after {
+	border-radius: 50px 0 0 0;
+	-webkit-border-radius: 0px 0 0 0;
+	-moz-border-radius: 5px 0 0 0;
+}
+
+.tree2 ul ul::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 50%;
+	border-left: 1px solid #ccc;
+	width: 0;
+	height: 10px;
+}
+
+.tree2 li a {
+	border: 0px solid #ccc;
+	padding: 5px 5px;
+	text-decoration: none;
+	color: #ffffff;
+	font-family: arial, verdana, tahoma;
+	font-size: 11pt;
+	display: inline-block;
+
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+.tooltiptext {
+	visibility: hidden;
+	width: fit-content;
+	font-size: 10pt;
+	background-color: black;
+	color: #fff;
+	text-align: left;
+	padding: 5px;
+	border-radius: 6px;
+	margin-left: -125px;
+	bottom: 50%;
+	left: 50%;
+	position: absolute;
+	z-index: 1;
+}
+
+.tree2 li button:hover .tooltiptext {
+	visibility: visible;
+}
+
+/* .tree2 li a:hover, .tree2 li a:hover+ul li a {
+	background: #ffffff; color: #007bb9; border: 1px solid #94a0b4;
+} */
+
+/* .tree2 li a:hover+ul li::after, 
+.tree2 li a:hover+ul li::before, 
+.tree2 li a:hover+ul::before, 
+.tree2 li a:hover+ul ul::before{
+	border-color:  #94a0b4;
+} */
