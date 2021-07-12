@@ -175,7 +175,7 @@ export default function NavBar() {
 					<div className="mobile-header position-relative ">
 						<div className="mobile-logo bg-light">
 							<Link to="/backoffice/bo" onClick={() => noMsgDropdown()}>
-								<img src="/logos/logosymbol.png" style={{height: 'auto', width: '50px'}} alt="logo"/>
+								<img src="/logos/logo.png" style={{height: 'auto', width: '50px'}} alt="logo"/>
 							</Link>
 						</div>
 						<Dropdown>

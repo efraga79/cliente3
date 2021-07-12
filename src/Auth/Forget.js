@@ -38,7 +38,7 @@ export default function Forget() {
 				<div style={{minHeight:'87vh'}}>
 					<Container>
 						<Row className="d-flex justify-content-center">
-							<Link to="/"><img src="/logos/logodark.png" alt="Logo" className="img-fluid" /></Link>
+							<Link to="/"><img src="/logos/logo.png" alt="Logo" className="img-fluid" /></Link>
 						</Row>
 						<Form>
 							<Col lg={{span:4, offset:4}} md={{span:6, offset:3}}>

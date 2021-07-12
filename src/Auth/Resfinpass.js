@@ -66,7 +66,7 @@ export default function Resfinpass (props) {
 			<div style={{minHeight:'87vh'}}>
 				<Container fluid>
 					<Row className="d-flex justify-content-center">
-						<Link to="/"><img src="/logos/logodark.png" alt="Logo" className="img-fluid" /></Link>
+						<Link to="/"><img src="/logos/logo.png" alt="Logo" className="img-fluid" /></Link>
 					</Row>
 					<Row>
 						<Col lg={{span:6, offset:3}} md={{span:6, offset:3}}>

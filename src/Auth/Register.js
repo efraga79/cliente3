@@ -153,7 +153,7 @@ export default function Register () {
 			<div style={{minHeight:'87vh'}}>
 				<Container>
 					<Row className="d-flex justify-content-center my-3">
-						<Link to="/"><img src="/logos/logodark.png" width="400" alt="Logo" className="img-fluid" /></Link>
+						<Link to="/"><img src="/logos/logo.png" width="400" alt="Logo" className="img-fluid" /></Link>
 					</Row>
 					<Form>
 						<Card>

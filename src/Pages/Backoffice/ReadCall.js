@@ -104,7 +104,7 @@ export default function Call() {
 							<div className={`card border-primary ${!lista.fk_adm ? 'ml-auto' : ''} m-2 p-2 col-md-8`} key={index}>
 								<Media>
 									{lista.fk_adm
-										? <img src="/logos/logosymbol.png" className="mr-2 align-self-center" width={50} height={50} alt="logo"/>
+										? <img src="/logos/logo.png" className="mr-2 align-self-center" width={50} height={50} alt="logo"/>
 										: <img src={`/fotos/${foto}`} className="mr-2 align-self-center" width={50} height={50} alt={foto}/>
 									}
 									

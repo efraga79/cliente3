@@ -18,7 +18,7 @@ export default function Logout() {
 	return (
 		<>
 			<Alert variant="default text-center">
-				<img src="/logos/logodark.png" alt="Logo" className="img-fluid"/><br/>
+				<img src="/logos/logo.png" alt="Logo" className="img-fluid"/><br/>
 				<Spinner animation="border" variant="danger" /> 
 				<h1 className="text-white">Loading...</h1>
 			</Alert>
