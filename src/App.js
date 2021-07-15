@@ -3,11 +3,7 @@ import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom"
 import { Container } from 'react-bootstrap';
 import { isAuthenticated } from './Auth/Auth'
 
-// import 'bootstrap/dist/css/bootstrap.min.css';
-import './vendor/bootstrap-select/dist/css/bootstrap-select.min.css'
-import './vendor/owl-carousel/owl.carousel.css'
-import './vendor/css/style.css'
-import 'https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Footer from './Components/Footer'
 import NavBar from './Components/NavBar'
