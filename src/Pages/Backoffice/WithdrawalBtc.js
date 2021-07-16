@@ -79,15 +79,10 @@ export default function WithdrawalBtc() {
 		})
 	}
 
-	const noMsgDropdown = () => {
-		document.getElementById('a').classList.remove('d-lg-block')
-		document.getElementById('b').classList.remove('d-lg-block')
-	}
-
 	return (
 		<Container>
 			{carteira.fk_status ?
-				<Row onClick={() => noMsgDropdown()}>
+				<Row>
 					<Col>
 						<div className="p-2 card border-primary">
 							<h4>{i18n.t('sacar_td')} BTC - {i18n.t('taxa')} 5%</h4>
@@ -135,7 +130,7 @@ export default function WithdrawalBtc() {
 					</Col>
 				</Row>
 			:
-				<Row onClick={() => noMsgDropdown()}>
+				<Row>
 					<Col>
 						<Alert variant="warning d-flex justify-content-between">
 							<h4><strong>{i18n.t('cadastre_carteira')}</strong></h4>

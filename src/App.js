@@ -1,9 +1,8 @@
 import React from 'react'
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom"
-import { Container } from 'react-bootstrap';
 import { isAuthenticated } from './Auth/Auth'
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Footer from './Components/Footer'
 import NavBar from './Components/NavBar'
@@ -33,6 +32,8 @@ import Register from './Auth/Register'
 import Resfinpass from './Auth/Resfinpass'
 import AuthWithDrawal from './Auth/AuthWithDrawal'
 import NoAuthWithDrawal from './Auth/NoAuthWithDrawal'
+import Sidebar from './Components/Sidebar/Sidebar';
+import { Container } from 'react-bootstrap'
 
 export default function App(){
 	const PrivateRoute = ({component: Component, ...rest}) => {
@@ -61,25 +62,27 @@ export default function App(){
 					<Route exact path="/backoffice/resfinpass/:email/:token" component={Resfinpass} />
 					<Route exact path="/:id" component={Indicant} />
 					<ContainerBo>
-						<NavBar></NavBar>
-						<Container fluid>
-							<PrivateRoute exact path="/backoffice/bo" component={Bo} />
-							<PrivateRoute exact path="/backoffice/materials" component={Materials} />
-							<PrivateRoute exact path="/backoffice/directs" component={Directs} />
-							<PrivateRoute exact path="/backoffice/binary" component={Binary} />
-							<PrivateRoute exact path="/backoffice/linear" component={Linear} />
-							<PrivateRoute exact path="/backoffice/profile" component={Profile} />
-							<PrivateRoute exact path="/backoffice/password" component={Password} />
-							<PrivateRoute exact path="/backoffice/financepassword" component={FinancePassword} />
-							<PrivateRoute exact path="/backoffice/extract" component={Extract} />
-							<PrivateRoute exact path="/backoffice/order" component={Order} />
-							<PrivateRoute exact path="/backoffice/paywithbalance" component={PayWithBalance} />
-							<PrivateRoute exact path="/backoffice/withdrawalbtc" component={WithdrawalBtc} />
-							<PrivateRoute exact path="/backoffice/updatewallet" component={UpdateWallet} />
-							<PrivateRoute exact path="/backoffice/call" component={Call} />
-							<PrivateRoute exact path="/backoffice/readcall" component={ReadCall} />
-						</Container>
-						<Footer />
+						<NavBar/>
+						<Sidebar/>
+						<div className="content-body">
+							<Container fluid>
+								<PrivateRoute exact path="/backoffice/bo" component={Bo} />
+								<PrivateRoute exact path="/backoffice/materials" component={Materials} />
+								<PrivateRoute exact path="/backoffice/directs" component={Directs} />
+								<PrivateRoute exact path="/backoffice/binary" component={Binary} />
+								<PrivateRoute exact path="/backoffice/linear" component={Linear} />
+								<PrivateRoute exact path="/backoffice/profile" component={Profile} />
+								<PrivateRoute exact path="/backoffice/password" component={Password} />
+								<PrivateRoute exact path="/backoffice/financepassword" component={FinancePassword} />
+								<PrivateRoute exact path="/backoffice/extract" component={Extract} />
+								<PrivateRoute exact path="/backoffice/order" component={Order} />
+								<PrivateRoute exact path="/backoffice/paywithbalance" component={PayWithBalance} />
+								<PrivateRoute exact path="/backoffice/withdrawalbtc" component={WithdrawalBtc} />
+								<PrivateRoute exact path="/backoffice/updatewallet" component={UpdateWallet} />
+								<PrivateRoute exact path="/backoffice/call" component={Call} />
+								<PrivateRoute exact path="/backoffice/readcall" component={ReadCall} />
+							</Container>
+						</div>
 					</ContainerBo>
 				</Switch>
 			</BrowserRouter>

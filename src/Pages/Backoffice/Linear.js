@@ -25,18 +25,12 @@ export default function Linear() {
 		getLinear()
 	}, [token]);
 	
-	const noMsgDropdown = () => {
-		document.getElementById('a').classList.remove('d-lg-block')
-		document.getElementById('b').classList.remove('d-lg-block')
-	}
-
 	return (
 		<Container>
-			<Row onClick={() => noMsgDropdown()}>
+			<Row>
 				<Col xl="12">
-					<div className="card border-primary p-2">
+					<div className="card p-2">
 						<h4>{i18n.t('linear_td')}</h4>
-						{console.log(treeData)}
 						<DynamicTree key="root" id="root" data={treeData} title={i18n.t('linear_td')} />
 					</div>
 				</Col>

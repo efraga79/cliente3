@@ -92,14 +92,9 @@ export default function Order() {
 		})
 	}
 
-	const noMsgDropdown = () => {
-		document.getElementById('a').classList.remove('d-lg-block')
-		document.getElementById('b').classList.remove('d-lg-block')
-	}
-
 	return (
 		<>
-			<Row onClick={() => noMsgDropdown()}>
+			<Row>
 				<Col>
 					<div className="p-2">
 						<h4 className="text-white">{i18n.t('pagar_td')} {i18n.t('com_td')} Bitcoin</h4>

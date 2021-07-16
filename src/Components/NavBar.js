@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Button, Dropdown, Accordion, Badge } from 'react-bootstrap';
+import { Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import * as Fa from 'react-icons/fa'
 import { i18n } from './Translates/i18n';
@@ -16,25 +16,10 @@ export default function NavBar() {
 	const I18N_STORAGE_KEY = 'i18nextLng'
 	const [language, setLanguage] = useState(localStorage.getItem(I18N_STORAGE_KEY))
 	const handleLanguage = e => {
-		noMsgDropdown()
 		setLanguage(e)
 		localStorage.setItem(I18N_STORAGE_KEY, e)
 		let location = window.location
 		window.location = location
-	}
-
-	const msgDropdownA = () => {
-		document.getElementById('b').classList.remove('d-lg-block')
-		document.getElementById('a').classList.toggle('d-lg-block')
-	}
-	const msgDropdownB = () => {
-		document.getElementById('a').classList.remove('d-lg-block')
-		document.getElementById('b').classList.toggle('d-lg-block')
-	}
-	
-	const noMsgDropdown = () => {
-		document.getElementById('a').classList.remove('d-lg-block')
-		document.getElementById('b').classList.remove('d-lg-block')
 	}
 
 	useEffect(() => {
@@ -43,6 +28,9 @@ export default function NavBar() {
 				setUsuarioy(success.data.usuarioy)
 			}).catch(error => {
 				console.log(error)
+				sessionStorage.removeItem('token')
+				let local = window.location
+				window.location = local
 			})
 
 			axios.get(`${process.env.REACT_APP_URL_API}/Bo/home/token/${token}`).then(success => {
@@ -58,165 +46,112 @@ export default function NavBar() {
 	}, [token]);
 
 	const ReadCall = (data) => {
-		noMsgDropdown()
 		sessionStorage.setItem('idCall', data)
 		window.location = '/backoffice/readcall'
 	}
 	
 	return (
 		<>
-			 <header style={{display: 'flex'}}>
-				<div className="sticky bg-white header-top d-none d-lg-block">
-					<div className="container">
-						<div className="row align-items-center">
-							<div className="col-md-5">
-								<div className="header-top-navigation">
-									<nav>
-										<ul>
-											<li className="active"><Link to="/backoffice/bo" onClick={() => noMsgDropdown()}>{i18n.t('principal_td')}</Link></li>
-											<li className="msg-trigger"><a className="msg-trigger-btn" href="#a" onClick={() => msgDropdownA()}>menu</a>
-												<div className="p-0 message-dropdown" id="a">
-													<Accordion>
-														{SidebarData.map((item, index) =>{
-															return <SubMenu item={item} btn={index} key={index}/>
-														})}
-													</Accordion>
-												</div>
-											</li>
-											<li className="notification-trigger">
-												<a className="msg-trigger-btn" href="#b" onClick={() => msgDropdownB()}>{i18n.t('list_chamado')}</a>
-												<div className="message-dropdown" id="b">
-													<div className="dropdown-title">
-														<p className="recent-msg">{i18n.t('list_chamado')}</p>
-													</div>
-													<ul className="dropdown-msg-list">
-														{chamado ? chamado.map((lista, index) => {
-																return (
-																	<React.Fragment key={index}>
-																	{index < 5 ?
-																		<li className="msg-list-item d-flex justify-content-between" onClick={e => ReadCall(lista.id)}>
-																			<div className="profile-thumb">
-																				<h3><Fa.FaEnvelope /></h3>
-																			</div>
-																			<div className="msg-content notification-content">
-																				{lista.status === 1
-																				? <p><Badge variant="warning">{i18n.t('aberto')}</Badge></p>
-																				: lista.status === 2
-																				? <p><Badge variant="info">{i18n.t('respondido')}</Badge></p>
-																				: lista.status === 3 
-																				? <p><Badge variant="success">{i18n.t('respondido')}</Badge></p>
-																				: ''} &nbsp;
-																				<p><strong>{lista.assunto}</strong></p>,
-																			</div>
-																			<div className="msg-time">
-																				<p>{lista.datahj}</p>
-																			</div>
-																		</li>
-																	: ''}
-																	</React.Fragment>
-																)
-															}) :''
-														}
-													</ul>
-													<div className="msg-dropdown-footer">
-														<Link to="/backoffice/call"  onClick={() => noMsgDropdown()}><Button variant="danger text-light">{i18n.t('todos_td')}</Button></Link>
-													</div>
-												</div>
-											</li>
-										</ul>
-									</nav>
-								</div>								
-							</div>
-							<div className="col-md-2">
-								<div className="text-center brand-logo">
-									<Link to="/backoffice/bo" onClick={() => noMsgDropdown()}>
-										<img src="/logos/logo.png" style={{maxHeight: '80px'}} alt="brand logo" className=""/>
-									</Link>
+			 <div class="nav-header">
+				<Link to="/backoffice/bo" class="brand-logo">
+					<img class="logo-abbr" src="/logos/logo.png" alt=""/>
+					<h4 class="brand-title"> {process.env.REACT_APP_NAME}</h4>
+				</Link>
+
+				<div class="nav-control">
+					<div class="hamburger">
+						<span class="line"></span><span class="line"></span><span class="line"></span>
+					</div>
+				</div>
+			</div>
+			 <div className="header">
+				<div className="header-content">
+					<nav className="navbar navbar-expand">
+						<div className="collapse navbar-collapse justify-content-between">
+							<div className="header-left">
+								<div className="dashboard_bar">
+									
 								</div>
 							</div>
-							<div className="col-md-5">
-								<div className="header-top-right d-flex align-items-center justify-content-end">	
-									
-									<Dropdown className="ml-auto" style={{width: 'fit-content'}}>
-										<Dropdown.Toggle style={{backgroundColor: '#ddd'}} id="dropdown-basic">
-											{
-												language === 'pt-BR'? <img src="/flags/pt.png" width="30px" alt="Português"/>
-												: language === 'es'? <img src="/flags/es.png" width="30px" alt="Español"/>
-												: language === 'fr'? <img src="/flags/fr.png" width="30px" alt="Français"/>
-												: <img src="/flags/us.png" width="30px" alt="English"/>
-											}
-										</Dropdown.Toggle>
-										
-										<Dropdown.Menu align="right">
-											<Dropdown.Item onClick={e => handleLanguage('en-US')}><img src="/flags/us.png" width="30px" alt="English"/> English</Dropdown.Item>
-											<Dropdown.Item onClick={e => handleLanguage('es')}><img src="/flags/es.png" width="30px" alt="Español"/> Español</Dropdown.Item>
-											<Dropdown.Item onClick={e => handleLanguage('fr')}><img src="/flags/fr.png" width="30px" alt="Français"/> Français</Dropdown.Item>
-											<Dropdown.Item onClick={e => handleLanguage('pt-BR')}><img src="/flags/pt.png" width="30px" alt="Português"/> Português</Dropdown.Item>
-										</Dropdown.Menu>
-									</Dropdown>
-									<div className="profile-setting-box">
-										<div className="profile-thumb-small">
-											<Button variant="link" className="p-0 profile-triger">
-												<figure>
-													<img src={`/fotos/${usuarioy.foto}`} alt="profile picture3"/>
-												</figure>
-											</Button>
+							<ul className="navbar-nav header-right">
+								<li className="nav-item dropdown notification_dropdown">
+									<button className="nav-link ai-icon" data-toggle="dropdown">
+										<Fa.FaComment/>
+										<div className="pulse-css"></div>
+									</button>
+									<div className="dropdown-menu rounded dropdown-menu-right">
+										<div id="DZ_W_Notification1" className="widget-media dz-scroll p-3 height380">
+											<ul className="timeline">
+												{chamado ? 
+													chamado.map((lista, index) => {
+														return (
+															<React.Fragment key={index}>
+																{index < 4 ?
+																	<li onClick={e => ReadCall(lista.id)} style={{cursor: 'pointer'}}>
+																		<div className="timeline-panel">
+																			<div className="media mr-2">
+																				<Fa.FaEnvelope />
+																			</div>
+																			<div className="media-body">
+																				<h6 className="mb-1">{lista.assunto}</h6>
+																				<small className="d-block">
+																					{lista.datahj}
+																					{lista.status === 1
+																					? <Badge variant="warning">{i18n.t('aberto')}</Badge>
+																					: lista.status === 2
+																					? <Badge variant="info">{i18n.t('respondido')}</Badge>
+																					: lista.status === 3 
+																					? <Badge variant="success">{i18n.t('respondido')}</Badge>
+																					: ''}
+																				</small>
+																			</div>
+																		</div>
+																	</li>
+																: ''}
+															</React.Fragment>
+														)
+													})
+												:''}
+											</ul>
+										</div>
+										<Link to="/backoffice/call" className="all-notification">{i18n.t('todos_td')} <Fa.FaArrowRight/> </Link>
+									</div>
+								</li>
+								<li className="nav-item dropdown notification_dropdown">
+									<button className="nav-link" data-toggle="dropdown">
+										{
+											language === 'pt-BR'? <img src="/flags/pt.png" width="20px" alt="Português"/>
+											: language === 'es'? <img src="/flags/es.png" width="20px" alt="Español"/>
+											: language === 'fr'? <img src="/flags/fr.png" width="20px" alt="Français"/>
+											: <img src="/flags/us.png" width="20px" alt="English"/>
+										}
+									</button>
+									<div className="dropdown-menu dropdown-menu-right rounded">
+										<div id="DZ_W_TimeLine11Home"
+											className="widget-timeline dz-scroll style-1 p-3 ps ps--active-y">
+											<ul className="timeline">
+												<li onClick={e => handleLanguage('en-US')} style={{cursor: 'pointer'}}><img src="/flags/us.png" width="30px" alt="English"/> English</li>
+												<li onClick={e => handleLanguage('es')} style={{cursor: 'pointer'}}><img src="/flags/es.png" width="30px" alt="Español"/> Español</li>
+												<li onClick={e => handleLanguage('fr')} style={{cursor: 'pointer'}}><img src="/flags/fr.png" width="30px" alt="Français"/> Français</li>
+												<li onClick={e => handleLanguage('pt-BR')} style={{cursor: 'pointer'}}><img src="/flags/pt.png" width="30px" alt="Português"/> Português</li>
+											</ul>
 										</div>
 									</div>
-								</div>
-							</div>
+								</li>
+								<li className="nav-item header-profile">
+									<Link to="/backoffice/profile" className="nav-link" data-toggle="dropdown">
+										<img src={`/fotos/${usuarioy.foto}`} width="20" alt="profile picture3"/>
+										<div className="header-info">
+											<span className="text-light"><strong>{usuarioy.usu_nome}</strong></span>
+											<p className="fs-12 mb-0 text-light">{usuarioy.usu_usuario}</p>
+										</div>
+									</Link>
+								</li>
+							</ul>
 						</div>
-					</div>
+					</nav>
 				</div>
-			</header>
-
-			<header style={{display: 'flex'}}>
-				<div className="sticky mobile-header-wrapper d-block d-lg-none">
-					<div className="mobile-header position-relative ">
-						<div className="mobile-logo bg-light">
-							<Link to="/backoffice/bo" onClick={() => noMsgDropdown()}>
-								<img src="/logos/logo.png" style={{height: 'auto', width: '50px'}} alt="logo"/>
-							</Link>
-						</div>
-						<Dropdown>
-							<Dropdown.Toggle style={{backgroundColor: '#ddd', color: '#000'}} id="dropdown-menu"><Fa.FaBars/></Dropdown.Toggle>
-							<Dropdown.Menu>
-								<Accordion>
-									{SidebarData.map((item, index) =>{
-										return <SubMenu item={item} btn={index} key={index}/>
-									})}
-								</Accordion>
-							</Dropdown.Menu>
-						</Dropdown>
-						<Dropdown className="ml-auto" style={{width: 'fit-content'}}>
-							<Dropdown.Toggle style={{backgroundColor: '#ddd'}} id="dropdown-basic">
-								{
-									language === 'pt-BR'? <img src="/flags/pt.png" width="30px" alt="Português"/>
-									: language === 'es'? <img src="/flags/es.png" width="30px" alt="Español"/>
-									: language === 'fr'? <img src="/flags/fr.png" width="30px" alt="Français"/>
-									: <img src="/flags/us.png" width="30px" alt="English"/>
-								}
-							</Dropdown.Toggle>
-							
-							<Dropdown.Menu align="right">
-								<Dropdown.Item onClick={e => handleLanguage('en-US')}><img src="/flags/us.png" width="30px" alt="English"/> English</Dropdown.Item>
-								<Dropdown.Item onClick={e => handleLanguage('es')}><img src="/flags/es.png" width="30px" alt="Español"/> Español</Dropdown.Item>
-								<Dropdown.Item onClick={e => handleLanguage('fr')}><img src="/flags/fr.png" width="30px" alt="Français"/> Français</Dropdown.Item>
-								<Dropdown.Item onClick={e => handleLanguage('pt-BR')}><img src="/flags/pt.png" width="30px" alt="Português"/> Português</Dropdown.Item>
-							</Dropdown.Menu>
-						</Dropdown>
-						<div className="mobile-header-profile bg-light">
-							<div className="profile-thumb profile-setting-box">
-								<Button className="p-0 profile-triger">
-									<figure className="profile-thumb-middle">
-										<img src={`/fotos/${usuarioy.foto}`} alt="profile picture1"/>
-									</figure>
-								</Button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</header>
+			</div>
 		</>
 	)
 }

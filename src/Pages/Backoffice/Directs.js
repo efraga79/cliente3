@@ -23,14 +23,10 @@ export default function Directs() {
 		}
 		getDirects()
 	}, [token]);
-	const noMsgDropdown = () => {
-		document.getElementById('a').classList.remove('d-lg-block')
-		document.getElementById('b').classList.remove('d-lg-block')
-	}
-
+	
 	return (
 		<Container>
-			<Row onClick={() => noMsgDropdown()}>
+			<Row>
 				<Col xl="12">
 					<div className="p-2 card border-primary">
 						<h4>{i18n.t('direto_td')}</h4>

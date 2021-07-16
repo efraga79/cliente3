@@ -24,14 +24,10 @@ export default function FinancePassword() {
 			setErroAlertShow(true)
 		})
 	}
-	const noMsgDropdown = () => {
-		document.getElementById('a').classList.remove('d-lg-block')
-		document.getElementById('b').classList.remove('d-lg-block')
-	}
-
+	
 	return (
 		<Container>
-			<Row onClick={() => noMsgDropdown()}>
+			<Row>
 				<Col>
 					<div className="card border-primary p-2">
 						<Row>

@@ -48,14 +48,10 @@ export default function Extract() {
 		}
 		totais()
 	}, [extrato])
-	const noMsgDropdown = () => {
-		document.getElementById('a').classList.remove('d-lg-block')
-		document.getElementById('b').classList.remove('d-lg-block')
-	}
-
+	
 	return (
 		<Container>
-			<Row onClick={() => noMsgDropdown()}>
+			<Row>
 				<Col xl="12">
 					<div className="card border-primary p-2">
 						<h4>{i18n.t('extrato_td')}</h4>

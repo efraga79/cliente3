@@ -69,14 +69,9 @@ export default function Call() {
 		})
 	}
 
-	const noMsgDropdown = () => {
-		document.getElementById('a').classList.remove('d-lg-block')
-		document.getElementById('b').classList.remove('d-lg-block')
-	}
-
 	return (
 		<Container>
-			<Row onClick={() => noMsgDropdown()}>
+			<Row>
 				<Col>
 				<div className="p-2 card border-primary">
 					<h4>

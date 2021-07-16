@@ -5,7 +5,7 @@ import bin from './css/binario.module.css'
 
 import { Chart } from "react-google-charts";
 
-import { Alert, Row, Col, Button, Form, Image } from 'react-bootstrap';
+import { Alert, Row, Col, Button, InputGroup, FormControl, ProgressBar, Table } from 'react-bootstrap';
 import Modals from '../../Components/SubComponents/Modals'
 import MapLeaflet from '../../Components/SubComponents/Leaflet'
 import * as Fa from 'react-icons/fa'
@@ -222,333 +222,135 @@ export default function Bo() {
 			}
 		})
 	}
-
-	const noMsgDropdown = () => {
-		document.getElementById('a').classList.remove('d-lg-block')
-		document.getElementById('b').classList.remove('d-lg-block')
-	}
-
+	
 	return (
 		<>
-			<div className="row" onClick={() => noMsgDropdown()}>
-				<div className="order-2 col-lg-3 order-lg-1">
-					<aside className="widget-area">
-						<div className="p-0 card card-profile widget-item">
-							<div className="profile-banner">
-								<figure className="profile-banner-small">
-									<Link to="/backoffice/profile">
-										<img src="/assets/banner/banner-small.jpg" alt='bg'/>
-									</Link>
-									<Link to="/backoffice/profile" className="profile-thumb-2">
-										<img src={`/fotos/${usuarioy.foto}`} alt={usuarioy.foto}/>
-									</Link>
-								</figure>
-								<div className="text-center profile-desc">
-									<h6 className="author"><Link to="/backoffice/profile">{usuarioy.usu_nome}</Link></h6>
-									<p><strong><Fa.FaCrosshairs/> {usuariox.bn_nome}</strong></p>
-									<p><Fa.FaEnvelope/> {usuarioy.usu_email}</p>
-									<p><Fa.FaWhatsapp/> {usuarioy.zap}</p>
-									<p><Fa.FaHandsHelping/> {i18n.t('patrocinador_td')}: {usuarioy.upline}</p>
-									<Link to="/backoffice/logout"><Button variant="danger" size="sm"><Fa.FaSignOutAlt/> {i18n.t('sair_td')}</Button></Link>
+		<section className="section">
+			<div className="container-fluid">
+				<Row style={{marginBottom: 25}}>
+					<Col lg="12">
+						<InputGroup>
+							<InputGroup.Prepend>
+								<Button variant="secondary" onClick={copyLinkToClipboard}>{i18n.t('link_de')}:</Button>
+							</InputGroup.Prepend>
+							<FormControl defaultValue={linkDeCadastro} id="copyLink" readOnly onClick={copyLinkToClipboard}/>
+							<InputGroup.Append>
+								<Button variant="secondary" onClick={copyLinkToClipboard}><Fa.FaCopy /> {copySuccess}</Button>
+							</InputGroup.Append>
+						</InputGroup>
+					</Col>
+				</Row>
+
+				<Row className="my-4">
+					<Col md="6">
+						<CardStatus 
+						bg="info"
+						valor={usuarioy.ca_nome}
+						nome={i18n.t('plano_al')}
+						subvalor={`${usuarioy.menor} pts.`}
+						perc={(usuarioy.menor / nextCareer.ca_pontos) *100}
+						icon="star"
+						imagem={usuarioy.ca_id}
+						small={`${parseFloat((usuarioy.menor / nextCareer.ca_pontos) *100).toFixed(1)}% to ${nextCareer.ca_nome}`} />
+					</Col>
+					<Col md="6">
+						<CardStatus
+						bg="success"
+						valor={dados.d_indicados}
+						nome={i18n.t('total_td')}
+						subvalor={i18n.t('direto_td')}
+						icon="sitemap"
+						/>
+					</Col>
+					<Col md="6">
+						<CardStatus 
+						bg="danger"
+						valor={dados.d_credito} 
+						money="$ " 
+						nome={i18n.t('saldo_td')}
+						subvalor={i18n.t('Atual')}
+						icon="usd" />
+					</Col>
+					<Col md="6">
+						<CardStatus 
+						bg="warning"
+						valor={usuariox.alterar === false?i18n.t('sim_td'):i18n.t('nao_td')} 
+						nome={i18n.t('ativo_td')}
+						subvalor={i18n.t('sys_tb')}
+						icon="thumbs-o-up" />
+					</Col>
+					<Col md="6">
+						<CardStatus bg="success" valor={money.entrada} money="$ " nome={i18n.t('entrada_et')} subvalor={i18n.t('ate_hj')} icon="money" />
+					</Col>
+					<Col md="6">
+						<CardStatus bg="primary" valor={totalUsu} nome={i18n.t('tb_usuarios')} subvalor={i18n.t('tb_usando_sys')} icon="users" />
+					</Col>
+				</Row>
+				<Row className="my-4">
+					<Col md="12">
+						<div className="card">
+							<div class="card-header d-sm-flex d-block pb-0 border-0">
+								<div class="mr-auto pr-3 mb-sm-0 mb-3">
+									<h4 class="text-light fs-20">{usuarioy.usu_pais} - Total: {pais} {i18n.t('paises_td')}</h4>
 								</div>
 							</div>
-						</div>
-						<div className="card widget-item">
-							<h4 className="widget-title">{i18n.t('status_td')}</h4>
-							<div className="widget-body">
-								<ul className="like-page-list-wrapper">
-									<li className="unorder-list">
-										<CardStatus 
-											valor={usuariox.alterar === false?i18n.t('sim_td'):i18n.t('nao_td')} 
-											nome={i18n.t('ativo_td')}
-											subvalor={i18n.t('sys_tb')}
-											icon={usuariox.alterar === false?"thumbs-o-up":"thumbs-o-down"}
-										/>
-									</li>
-									<li className="unorder-list">
-										<CardStatus 
-											valor={usuarioy.ca_nome}
-											nome={i18n.t('plano_al')}
-											subvalor={`${usuarioy.menor} pts.`}
-											perc={(usuarioy.menor / nextCareer.ca_pontos) *100}
-											icon="star"
-											imagem={usuarioy.ca_id}
-											small={`${parseFloat((usuarioy.menor / nextCareer.ca_pontos) *100).toFixed(1)}% to ${nextCareer.ca_nome}`}
-										/>
-									</li>
-									<li className="unorder-list">
-										<CardStatus 
-											valor={dados.d_indicados}
-											nome={i18n.t('total_td')}
-											subvalor={i18n.t('direto_td')}
-											icon="handshake-o"
-										/>
-									</li>
-									<li className="unorder-list">
-										<CardStatus 
-											valor={dados.d_credito} 
-											money="$ " 
-											nome={i18n.t('saldo_td')}
-											subvalor={i18n.t('Atual')}
-											icon="usd"
-										/>
-									</li>
-									<li className="unorder-list">
-										<CardStatus 
-											valor={totalUsu}
-											nome={i18n.t('tb_usuarios')}
-											subvalor={i18n.t('tb_usando_sys')}
-											icon="users"
-										/>
-									</li>
-									<li className="unorder-list">
-										<CardStatus 
-											valor={money.entrada}
-											money="$ "
-											nome={i18n.t('entrada_et')}
-											subvalor={i18n.t('ate_hj')}
-											icon="money"
-										/>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</aside>
-				</div>
-				<div className="order-1 col-lg-6 order-lg-2">
-					<div className="card card-small">
-						<div className="share-box-inner">
-							<h5 className="d-none d-lg-block">{i18n.t('link_de')}</h5>
-							<div className="share-content-box w-100">
-								<form className="share-text-box">
-									<Form.Control defaultValue={linkDeCadastro} className="share-text-field" id="copyLink" readOnly onClick={copyLinkToClipboard}/>
-									<Button className="btn-share" onClick={copyLinkToClipboard}><Fa.FaCopy /> {copySuccess}</Button>
-								</form>
-							</div>
-						</div>
-					</div>
-					{renew ?
-						<div className="card">
-							<div className="post-content">
-								<Alert variant="danger">
-									<h3>{i18n.t('titulo_msg')}!</h3>
-									<h4>{bloqueio}</h4>
-									<p>{i18n.t('msg_renovacao')}</p>
-									<hr/>
-									<Alert.Link href="/backoffice/order"><Button variant="danger">{i18n.t('renovar_td')}</Button></Alert.Link>
-								</Alert>
-							</div>
-						</div>
-					: ''}
-					{usuariox.alterar && ativaAlterarPlano ?
-						<div className="card">
-							<div className="post-title d-flex align-items-center">
-							<h4>{i18n.t('plano_main')}</h4>
-							</div>
-							<div className="post-content">
-								<Button variant="primary" size="lg" block onClick={() => setModalShow(true)}>{i18n.t('plano_main2')}</Button>
-							</div>
-						</div>
-					: ''}
-					<div className="card">
-						<div className="post-title d-flex align-items-center">
-							<h4>{i18n.t('valor_td')} {cotas? new Intl.NumberFormat('us-US', { style: 'currency', currency: 'USD' }).format(cotas.ct_valor):0} ({i18n.t('limite_td')} {cotas?new Intl.NumberFormat('us-US', { style: 'currency', currency: 'USD' }).format(cotas.ct_limite):0})</h4>
-						</div>
-						<div className="post-content">
-							{alertoitenta ?
-								<Alert variant="warning">
-									<strong>{i18n.t('limite_80')}</strong><br/>
-									<Link to="/backoffice/order"><Button variant="warning">{i18n.t('pedido_td')}</Button></Link>
-								</Alert>
-							: ''}
-							<Chart
-								loader={<div>Loading Chart</div>}
-								maxWidth={'100%'}
-								maxHeight={'100%'}
-								chartType="PieChart"
-								data={donutData}
-								options={donutOptions}
-								style={{margin: 'auto'}}
-							/>
-						</div>
-					</div>
-					<div className="card">
-						<div className="post-title d-flex align-items-center">
-							<h4>{i18n.t('binario_td')}</h4>
-						</div>
-						<div className="post-content mx-auto">
-							<div className="card">
-								<h4>{i18n.t('perna_td')} {i18n.t('pref_td')}</h4>
-								{pernaAlertShow ?
-									<Alert variant="success" onClose={() => setPernaAlertShow(false)} dismissible>
-										<strong>{i18n.t('parabens_td')}!</strong> {i18n.t('perna_td')} {legCheck === 'e'?i18n.t('esquerda_td'):i18n.t('direita_td')} {i18n.t('pref_td')}.
-									</Alert>
-								:''}
+							<div className="card-cody py-0">
 								<Row>
-									<Col xs="6">
-										<Button variant={legCheck === 'e'?'success':'secondary'} block onClick={() => selectPerna('e')} id="pernae">{i18n.t('perna_td')} {i18n.t('esquerda_td')} <span className="badge badge-light">{pernaEsquerda}</span></Button>
+									<Col md="6">
+										<Chart
+											width={'fit-content'}
+											height={'300px'}
+											chartType="PieChart"
+											data={donutData}
+											options={donutOptions}
+										/>
 									</Col>
-									<Col xs="6">
-										<Button variant={legCheck === 'd'?'success':'secondary'} block onClick={() => selectPerna('d')} id="pernad">{i18n.t('perna_td')} {i18n.t('direita_td')} <span className="badge badge-light">{pernaDireita}</span></Button>
+									<Col md="6">
+										<MapLeaflet latlng={latlng}></MapLeaflet>
 									</Col>
 								</Row>
 							</div>
-							<div className={`${bin.tree2} d-none d-lg-block`}>
-								<ul>
-									<li>
-										{nodes[0] ?
-										<Button variant="link" style={{width: '110px', height: '110px'}} onClick={e => novoUser(nodes[0].uprede)}>
-											<Image src={`/img/${nodes[0].fk_bonus}.png`} />
-											<br/>{nodes[0].usu_usuario}
-											<span className={bin.tooltiptext}>
-												User: {nodes[0].usu_usuario}<br/>
-												Sponsor: {nodes[0].upline}<br/>
-												Directs: {nodes[0].d_diretos}<br/>
-												Points E: {nodes[0].d_equipe_e}<br/>
-												Points D: {nodes[0].d_equipe_d}<br/>
-												Active: {nodes[0].ativo}<br/>
-											</span>
-										</Button>
-										:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>}
-										<ul>
-											<li>
-												{nodes[0]?nodes[0]['children']?nodes[0]['children']['e']?
-												<Button variant="link" style={{width: '110px', height: '110px'}} onClick={e => novoUser(nodes[0]['children']['e'].usu_usuario)}>
-													<Image src={`/img/${nodes[0]['children']['e'].fk_bonus}.png`} />
-													<br/>
-													{nodes[0]['children']['e'].usu_usuario}
-													<span className={bin.tooltiptext}>
-														User: {nodes[0]['children']['e'].usu_usuario}<br/>
-														Sponsor: {nodes[0]['children']['e'].upline}<br/>
-														Directs: {nodes[0]['children']['e'].d_diretos}<br/>
-														Points E: {nodes[0]['children']['e'].d_equipe_e}<br/>
-														Points D: {nodes[0]['children']['e'].d_equipe_d}<br/>
-														Active: {nodes[0]['children']['e'].ativo}
-													</span>
-												</Button>
-												:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>}
-												<ul>
-													<li>
-														{nodes[0]?nodes[0]['children']?nodes[0]['children']['e']?nodes[0]['children']['e']['children']?nodes[0]['children']['e']['children']['e']?
-														<Button variant="link" style={{width: '110px', height: '110px'}} onClick={e => novoUser(nodes[0]['children']['e']['children']['e'].usu_usuario)}>
-															<Image src={`/img/${nodes[0]['children']['e']['children']['e'].fk_bonus}.png`} />
-															<br/>
-															{nodes[0]['children']['e']['children']['e'].usu_usuario}
-															<span className={bin.tooltiptext}>
-																User:
-																{nodes[0]['children']['e']['children']['e'].usu_usuario}<br/>
-																Sponsor:
-																{nodes[0]['children']['e']['children']['e'].upline}<br/>
-																Directs:
-																{nodes[0]['children']['e']['children']['e'].d_diretos}<br/>
-																Points E:
-																{nodes[0]['children']['e']['children']['e'].d_equipe_e}<br/>
-																Points D:
-																{nodes[0]['children']['e']['children']['e'].d_equipe_d}<br/>
-																Active: {nodes[0]['children']['e']['children']['e'].ativo}
-															</span>
-														</Button>
-														:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>}
-													</li>
-													<li>
-														{nodes[0]?nodes[0]['children']?nodes[0]['children']['e']?nodes[0]['children']['e']['children']?nodes[0]['children']['e']['children']['d']?
-														<Button variant="link" style={{width: '110px', height: '110px'}} onClick={e => novoUser(nodes[0]['children']['e']['children']['d'].usu_usuario)}>
-															<Image src={`/img/${nodes[0]['children']['e']['children']['d'].fk_bonus}.png`} />
-															<br/>
-															{nodes[0]['children']['e']['children']['d'].usu_usuario}
-															<span className={bin.tooltiptext}>
-																User:
-																{nodes[0]['children']['e']['children']['d'].usu_usuario}<br/>
-																Sponsor:
-																{nodes[0]['children']['e']['children']['d'].upline}<br/>
-																Directs:
-																{nodes[0]['children']['e']['children']['d'].d_diredos}<br/>
-																Points E:
-																{nodes[0]['children']['e']['children']['d'].d_equipe_e}<br/>
-																Points D:
-																{nodes[0]['children']['e']['children']['d'].d_equipe_d}<br/>
-																Active: {nodes[0]['children']['e']['children']['d'].ativo}
-															</span>
-														</Button>
-														:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>}
-													</li>
-												</ul>
-											</li>
-											<li>
-												{nodes[0]?nodes[0]['children']?nodes[0]['children']['d']?
-												<Button variant="link" style={{width: '110px', height: '110px'}} onClick={e => novoUser(nodes[0]['children']['d'].usu_usuario)}>
-													<Image src={`/img/${nodes[0]['children']['d'].fk_bonus}.png`} />
-													<br/>
-													{nodes[0]['children']['d'].usu_usuario}
-													<span className={bin.tooltiptext}>
-														User: {nodes[0]['children']['d'].usu_nome}<br/>
-														Sponsor: {nodes[0]['children']['d'].upline}<br/>
-														Directs: {nodes[0]['children']['d'].d_diretos}<br/>
-														Points E: {nodes[0]['children']['d'].d_equipe_e}<br/>
-														Points D: {nodes[0]['children']['d'].d_equipe_d}<br/>
-														Active: {nodes[0]['children']['d'].ativo}
-													</span>
-												</Button>
-												:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>}
-												<ul>
-													<li>
-														{nodes[0]?nodes[0]['children']?nodes[0]['children']['d']?nodes[0]['children']['d']['children']?nodes[0]['children']['d']['children']['e']?
-														<Button variant="link" style={{width: '110px', height: '110px'}} onClick={e => novoUser(nodes[0]['children']['d']['children']['e'].usu_usuario)}>
-															<Image src={`/img/${nodes[0]['children']['d']['children']['e'].fk_bonus}.png`} />
-															<br/>
-															{nodes[0]['children']['d']['children']['e'].usu_usuario}
-															<span className={bin.tooltiptext}>
-																User:
-																{nodes[0]['children']['d']['children']['e'].usu_usuario}<br/>
-																Sponsor:
-																{nodes[0]['children']['d']['children']['e'].upline}<br/>
-																Directs:
-																{nodes[0]['children']['d']['children']['e'].d_diretos}<br/>
-																Points E:
-																{nodes[0]['children']['d']['children']['e'].d_equipe_e}<br/>
-																Points D:
-																{nodes[0]['children']['d']['children']['e'].d_equipe_d}<br/>
-																Active: {nodes[0]['children']['d']['children']['e'].ativo}
-															</span>
-														</Button>
-														:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>}
-													</li>
-													<li>
-													{nodes[0]?nodes[0]['children']?nodes[0]['children']['d']?nodes[0]['children']['d']['children']?nodes[0]['children']['d']['children']['d']?
-														<Button variant="link" style={{width: '110px', height: '110px'}} onClick={e => novoUser(nodes[0]['children']['d']['children']['d'].usu_usuario)}>
-															<Image src={`/img/${nodes[0]['children']['d']['children']['d'].fk_bonus}.png`}/>
-															<br/>
-															{nodes[0]['children']['d']['children']['d'].usu_usuario}
+						</div>
+					</Col>
+				</Row>
+				
+				{renew ?
+					<Alert variant="danger">
+						<h3>{i18n.t('titulo_msg')}!</h3>
+						<h4>{bloqueio}</h4>
+						<p>{i18n.t('msg_renovacao')}</p>
+						<hr/>
+						<Alert.Link href="/backoffice/order"><Button variant="danger">{i18n.t('renovar_td')}</Button></Alert.Link>
+					</Alert>
+				: ''}
+				
+				{usuariox.alterar && ativaAlterarPlano ?
+					<Row className="my-4">
+						<Col xs="12">
+							<h4>{i18n.t('plano_main')}</h4>
+							<Button variant="primary" size="lg" block onClick={() => setModalShow(true)}>{i18n.t('plano_main2')}</Button>
+						</Col>
+					</Row>
+				: ''}
 
-															<span className={bin.tooltiptext}>
-																User:
-																{nodes[0]['children']['d']['children']['d'].usu_nome}<br/>
-																Sponsor:
-																{nodes[0]['children']['d']['children']['d'].upline}<br/>
-																Directs:
-																{nodes[0]['children']['d']['children']['d'].d_diretos}<br/>
-																Points E:
-																{nodes[0]['children']['d']['children']['d'].d_equipe_e}<br/>
-																Points D:
-																{nodes[0]['children']['d']['children']['d'].d_equipe_d}<br/>
-																Active: {nodes[0]['children']['d']['children']['d'].ativo}
-															</span>
-														</Button>
-														:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>:<Button variant="link"><Image src={`/img/vazio.png`} /><br/>{i18n.t('empty_td')}</Button>}
-													</li>
-												</ul>
-											</li>
-										</ul>
-									</li>
-								</ul>
-							</div>
+				<Row className="my-4">
+					<Col>
+						<div className="card border-primary p-2">
+							<h4>{i18n.t('valor_td')} {cotas? new Intl.NumberFormat('us-US', { style: 'currency', currency: 'USD' }).format(cotas.ct_valor):0} ({i18n.t('limite_td')} {cotas?new Intl.NumberFormat('us-US', { style: 'currency', currency: 'USD' }).format(cotas.ct_limite):0})</h4>
+							{alertoitenta ?
+								<Alert variant="warning">
+									<h4><strong>{i18n.t('limite_80')}</strong></h4>
+								</Alert>
+							: ''}
+							<ProgressBar animated now={cotas?cotas.perc:0} label={cotas?`${parseFloat(cotas.perc).toFixed(1)}%`:0} style={{height: 30, fontSize: 20, fontWeight: 'bold'}}/>
 						</div>
-					</div>
-					<div className="card">
-						<div className="post-title d-flex align-items-center">
+					</Col>
+				</Row>
+
+				<Row className="my-4">
+					<Col md="6">
+						<div className="card border-primary p-2">
 							<h4>UPGRADE</h4>
-						</div>
-						<div className="post-content">
 							{upgradeAlertShow ? 
 								<Alert variant="success" onClose={() => setUpgradeAlertShow(false)} dismissible>
 									<strong>{i18n.t('parabens_td')}!</strong> {i18n.t('pedido_td')} {i18n.t('efetuado_td')} {i18n.t('sucesso_td')}. <Link to="/backoffice/order"><Button variant="success">{i18n.t('pedido_td')}</Button></Link>
@@ -559,141 +361,90 @@ export default function Bo() {
 									<strong>{i18n.t('erro_td')}!</strong> {i18n.t('pedido_td')} {i18n.t('pendente_td')}. <Link to="/backoffice/order"><Button variant="danger">{i18n.t('pedido_td')}</Button></Link>
 								</Alert>
 							:''}
-							<div className="share-box-inner">
-								<div className="share-content-box w-100">
-									<div className="share-text-box">
-										<Form.Control as="select" value={selectUpgradePlan} className="share-text-field" custom onChange={e => setSelectUpgradePlan(e.target.value)}>
-											<option>-- {i18n.t('escolha_td')} {i18n.t('plano_td')} --</option>
-											{listPlanos.map((opt, index) => {
-												return <option key={index} value={opt.bn_id}>{`${opt.bn_nome} $: ${opt.carac_valor}`}</option>
-											})}
-										</Form.Control>
-										<Button className="btn-share" disabled={!selectUpgradePlan} onClick={() => newPlan()}><Fa.FaLevelUpAlt/></Button>
-									</div>
-								</div>
-							</div>
+							<InputGroup>
+								<FormControl as="select" value={selectUpgradePlan} custom onChange={e => setSelectUpgradePlan(e.target.value)}>
+									<option>-- {i18n.t('escolha_td')} {i18n.t('plano_td')} --</option>
+									{listPlanos.map((opt, index) => {
+										return <option key={index} value={opt.bn_id}>{`${opt.bn_nome} $: ${opt.carac_valor}`}</option>
+									})}
+								</FormControl>
+								<InputGroup.Append>
+									<Button variant="dark" onClick={() => newPlan()}>Upgrade</Button>
+								</InputGroup.Append>
+							</InputGroup>
 						</div>
-					</div>
-					<div className="card">
-						<div className="post-title d-flex align-items-center">
-							<h4>{i18n.t('pais_td')}: {usuarioy.usu_pais} (Total: {pais} {i18n.t('paises_td')})</h4>
+					</Col>
+					<Col md="6">
+						<div className="card border-primary p-2">
+							<h4>{i18n.t('perna_td')} {i18n.t('pref_td')}</h4>
+							{pernaAlertShow ?
+								<Alert variant="success" onClose={() => setPernaAlertShow(false)} dismissible>
+									<strong>{i18n.t('parabens_td')}!</strong> {i18n.t('perna_td')} {legCheck === 'e'?i18n.t('esquerda_td'):i18n.t('direita_td')} {i18n.t('pref_td')}.
+								</Alert>
+							:''}
+							<Row>
+								<Col xs="6">
+									<Button variant={legCheck === 'e'?'success':'secondary'} block onClick={() => selectPerna('e')} id="pernae">{i18n.t('perna_td')} {i18n.t('esquerda_td')}</Button>
+								</Col>
+								<Col xs="6">
+									<Button variant={legCheck === 'd'?'success':'secondary'} block onClick={() => selectPerna('d')} id="pernad">{i18n.t('perna_td')} {i18n.t('direita_td')}</Button>
+								</Col>
+							</Row>
 						</div>
-						<div className="post-content">
-							<Chart
-								loader={<div>Loading Chart</div>}
-								maxWidth={'100%'}
-								maxHeight={'100%'}
-								chartType="PieChart"
-								data={pieData}
-								options={pieOptions}
-								style={{margin: 'auto', padding: '0px'}}
-							/>
-						</div>
-						<div className="post-content">
-							<MapLeaflet latlng={latlng}></MapLeaflet>
-						</div>
-					</div>
-				</div>
-				<div className="order-3 col-lg-3">
-					<aside className="widget-area">
-						{files ? 
-							<div className="card widget-item">
-								<h4 className="widget-title">{i18n.t('materiais_td')}</h4>
-								<div className="widget-body">
-									<Link to="/backoffice/materials"><Button variant="danger">{i18n.t('materiais_td')}</Button></Link>
-									<ul className="like-page-list-wrapper">
-										{files.map((file, index) => {
-											return (
-												<React.Fragment key={index}>
-												<li className="unorder-list">
-													<CardStatus 
-														valor={file.a_nome}
-														nome={file.a_tipo}
-														subvalor={file.a_data}
-														icon="file"
-													/>
-												</li>
-												</React.Fragment>
-											)
-										})}
-									</ul>
-								</div>
-							</div>
-						: ''}
-						<div className="card widget-item">
-							<h4 className="widget-title">{i18n.t('info_pessoal')}</h4>
-							<div className="widget-body">
-								<ul className="like-page-list-wrapper">
-									<li className="unorder-list">
-										<CardStatus 
-											valor={i18n.t('pack')}
-											nome={usuariox.bn_nome}
-											subvalor={''}
-											icon='crosshairs'
-										/>
-									</li>
-									<li className="unorder-list">
-										<CardStatus 
-											valor={i18n.t('data_ativa')}
-											nome={dataPag?new Intl.DateTimeFormat('pt-BR').format(dataPag):i18n.t('pendente_td')}
-											subvalor={''}
-											icon='calendar'
-										/>
-									</li>
-									<li className="unorder-list">
-										<CardStatus 
-											valor={i18n.t('qualif_binario')}
-											nome={usuariox.usu_data_qualif?i18n.t('sim_td'):''}
-											subvalor={usuariox.usu_data_qualif?new Intl.DateTimeFormat('pt-BR').format(Date.parse(usuariox.usu_data_qualif)):i18n.t('pendente_td')}
-											icon={usuariox.usu_data_qualif?'check':'times'}
-										/>
-									</li>
-									<li className="unorder-list">
-										<CardStatus 
-											valor={i18n.t('plano_al')}
-											nome={usuariox.ca_nome}
-											subvalor=''
-											icon='star'
-										/>
-									</li>
-									<li className="unorder-list">
-										<CardStatus 
-											valor={i18n.t('qtd_rede')}
-											nome={totalUsu / 5}
-											subvalor=''
-											icon='sitemap'
-										/>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</aside>
-				</div>
-			</div>
-
-			<Modals
-				size="lg"
-				title={i18n.t('escolha_plano')}
-				contentClassName="bg-light"
-				show={modalShow}
-				onHide={() => setModalShow(false)}
-			>
-				<Button variant="primary" size="lg" block onClick={() => alterPlan()}>{i18n.t('alterar_td')}</Button>
-				<Row>
-					{planAlterar.map((el, index) => {
-						return (
-							<Col md="4" key={index} onClick={() => classPlan(el.bn_id)} style={{cursor: 'pointer'}}>
-								<div className="m-2 text-center card" id={`card${el.bn_id}`}>
-									<img src="/logos/logo.png" style={{width: '50px', margin: 'auto'}} alt="" />
-									<p className="m-1"><strong>{el.bn_nome}</strong></p>
-									<p className="m-1"><strong><NumberFormat value={el.carac_valor} displayType={'text'} thousandSeparator={true} prefix={`$ `}/></strong></p>
-								</div>
-							</Col>
-						)
-					})}
+					</Col>
 				</Row>
-				<Button variant="primary" size="lg" block onClick={() => alterPlan()}>{i18n.t('alterar_td')}</Button>
-			</Modals>
-		</>
+				<Row className="my-4">
+					<Col>
+						<div className="card border-primary p-2">
+							<h4>{i18n.t('dados_td')}</h4>
+							<Table responsive striped bordered hover>
+								<thead>
+									<tr>
+										<th>{i18n.t('pack')}</th>
+										<th>{i18n.t('data_ativa')}</th>
+										<th>{i18n.t('qualif_binario')}</th>
+										<th>{i18n.t('plano_al')}</th>
+										<th>{i18n.t('qtd_rede')}</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>{usuariox.bn_nome}</td>
+										<td>{dataPag?new Intl.DateTimeFormat('pt-BR').format(dataPag):''}</td>
+										<td>{usuariox.usu_data_qualif?`${i18n.t('sim_td')} - ${new Intl.DateTimeFormat('pt-BR').format(Date.parse(usuariox.usu_data_qualif))}`:i18n.t('nao_td')}</td>
+										<td>{usuariox.ca_nome}</td>
+										<td>{totalUsu / 5}</td>
+									</tr>
+								</tbody>
+							</Table>
+						</div>
+					</Col>
+				</Row>
+			</div>
+			
+		</section>
+
+		<Modals
+			size="lg"
+			title={i18n.t('escolha_plano')}
+			contentClassName="bg-light"
+			show={modalShow}
+			onHide={() => setModalShow(false)}
+		>
+			<Row>
+				{planAlterar.map((el, index) => {
+					return (
+						<Col md="4" key={index} onClick={() => classPlan(el.bn_id)}>
+							<div className="card border-primary p-2 text-center" id={`card${el.bn_id}`}>
+								<h4 className="m-1">{el.bn_nome}</h4>
+								<h3 className="m-1">{el.carac_valor}</h3>
+							</div>
+						</Col>
+					)
+				})}
+			</Row>
+			<Button variant="primary" size="lg" block onClick={() => alterPlan()}>{i18n.t('alterar_td')}</Button>
+		</Modals>
+	</>
 	)
 }
