@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 import { Link } from "react-router-dom"
-import { Alert, Container, Form, Row, Col, Button, Badge, Spinner, Card } from 'react-bootstrap'
+import { Alert, Container, Form, FormControl, InputGroup, Row, Col, Button, Badge, Spinner, Card } from 'react-bootstrap'
 import { i18n } from '../Components/Translates/i18n'
 
 export default function Register () {
@@ -152,28 +152,30 @@ export default function Register () {
 		<>
 			<div style={{minHeight:'87vh'}}>
 				<Container>
-					<Row className="d-flex justify-content-center my-3">
-						<Link to="/"><img src="/logos/logo.png" width="400" alt="Logo" className="img-fluid" /></Link>
-					</Row>
 					<Form>
+						<Row className="mb-3">
+							<Col md="4" className="text-center">
+								<Link to="/"><img src="/logos/logo.png" style={{maxHeight: '150px'}} alt="Logo" className="img-fluid" /></Link>
+							</Col>
+							<Col md="8">
+								<Alert variant="info">{i18n.t('indicado_por')} <strong>{login}</strong> <Link to={`/${login}`} ><Button variant="info" size="sm">{i18n.t('alterar_td')} {i18n.t('patrocinador_td')}</Button></Link></Alert>
+								<Link to="/backoffice/login">{i18n.t('cadastrado_td')}</Link>
+							</Col>
+						</Row>
 						<Card>
-							<Row className="mb-3">
-								<Col className="text-center" md={{span:6, offset:3}}>
-									<h3 style={{textTransform: 'uppercase'}}>{i18n.t('cadastrar_td')}</h3>
-									<Alert variant="dark">{i18n.t('indicado_por')} <strong>{login}</strong> <Link to={`/${login}`} ><Button variant="dark" size="sm">{i18n.t('alterar_td')} {i18n.t('patrocinador_td')}</Button></Link></Alert>
-									<Link to="/backoffice/login">{i18n.t('cadastrado_td')}</Link>
-								</Col>
+							<Row className="my-3 mx-auto">
+								<h3 style={{textTransform: 'uppercase'}}>{i18n.t('cadastrar_td')}</h3>
 							</Row>
 							<Row>
 								<Col md="4">
-									<Form.Group>
-										<Form.Label>{i18n.t('plano_td')}</Form.Label>
-										<Form.Control as="select" value={plano} custom onChange={e => setPlano(e.target.value)}>
+									<Form.Label>{i18n.t('plano_td')}</Form.Label>
+									<InputGroup>
+										<FormControl as="select" value={plano} custom onChange={e => setPlano(e.target.value)}>
 											{planos.map((opt, index) => {
 												return <option key={index} value={opt.bn_id}>{opt.bn_nome}</option>
 											})}
-										</Form.Control>
-									</Form.Group>
+										</FormControl>
+									</InputGroup>
 									<Form.Group>
 										<Form.Label>{i18n.t('usuario_td')}</Form.Label>
 										{erroUsuario? <><br/><Badge variant="danger">{i18n.t('login_ja_tem')}</Badge></> : ''}
@@ -215,31 +217,29 @@ export default function Register () {
 										{erroSenhaF? <Badge variant="danger">{i18n.t('senhaf_nao_confere')}</Badge> : ''}
 										<Form.Control size="lg" type="password" placeholder={`${i18n.t('confirmar_td')} ${i18n.t('senha_td')} ${i18n.t('financeiro_td')}`} autoComplete="off" value={confSeg} onBlur={() => validSenhaF()} onChange={e => setConfSeg(e.target.value)} />
 									</Form.Group>
-									<Form.Group>
-										<Form.Label>{i18n.t('pais_td')}</Form.Label>
-										<Form.Control as="select" value={paises} custom onChange={e => setPaises(e.target.value)}>
+									<Form.Label>{i18n.t('pais_td')}</Form.Label>
+									<InputGroup>
+										<FormControl as="select" value={paises} custom onChange={e => setPaises(e.target.value)}>
 											{countries.map((opt, index) => {
 												return <option key={index} value={opt.nome}>{opt.nome}</option>
 											})}
-										</Form.Control>
-									</Form.Group>
+										</FormControl>
+									</InputGroup>
 									<Form.Group>
 										<Form.Label>{i18n.t('ddi_pais')} (ex.: +44)</Form.Label>
 										<Form.Control size="lg" type="number" placeholder={i18n.t('ddi_pais')} autoComplete="off" onChange={e => setDdi(e.target.value)} />
 									</Form.Group>
 									<Form.Group>
-										<Form.Label>{i18n.t('zap_td')}</Form.Label>
-										<Form.Control size="lg" type="text" placeholder={i18n.t('zap_td')} autoComplete="off" onChange={e => setWhats(e.target.value)} />
+										<Form.Label>{i18n.t('telefone_td')}</Form.Label>
+										<Form.Control size="lg" type="text" placeholder={i18n.t('telefone_td')} autoComplete="off" onChange={e => setWhats(e.target.value)} />
 									</Form.Group>
 								</Col>
 							</Row>
-							<Row>
-								<Col>
-									<Form.Check.Label className="p-3"><Form.Check.Input type={'checkbox'} onChange={e => setAceite(e.target.checked)}/>{i18n.t('aceite_td')} </Form.Check.Label>
+							<Row className="pb-3">
+								<Col md="4" className="text-center">
+									<Form.Check.Label className="pb-3"><Form.Check.Input type={'checkbox'} onChange={e => setAceite(e.target.checked)}/>{i18n.t('aceite_td')} </Form.Check.Label>
 								</Col>
-							</Row>
-							<Row>
-								<Col>
+								<Col md="8" className="mx-auto">
 									{waiting?
 										<h1 className="text-center"><Spinner animation="border" variant="primary" /> Loading...</h1>
 									:

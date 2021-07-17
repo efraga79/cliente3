@@ -4,7 +4,6 @@ import { isAuthenticated } from './Auth/Auth'
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Footer from './Components/Footer'
 import NavBar from './Components/NavBar'
 import ContainerBo from './Components/ContainerBo'
 

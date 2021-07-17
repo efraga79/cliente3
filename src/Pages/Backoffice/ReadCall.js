@@ -20,6 +20,7 @@ export default function Call() {
 	
 	useEffect(() => {
 		const lerChamado = props => {
+			window.scrollTo(0, 0)
 			axios.post(`${process.env.REACT_APP_URL_API}/Bo/readCalled2/token/${token}`,idCall).then(success => {
 				setLer(success.data.ler)
 				setFoto(success.data.foto)

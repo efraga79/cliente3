@@ -11,6 +11,7 @@ export default function Profile() {
 	
 	useEffect(() => {
 		const getPessoais = () => {
+			window.scrollTo(0, 0)
 			axios.get(`${process.env.REACT_APP_URL_API}/MeusDados/dadospessoais_ajax/token/${token}`).then(success => {
 				setPessoais(success.data.dados)
 			}).catch(error => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Container, Alert, Button, Col, Form, Row } from 'react-bootstrap'
+import { Container, Alert, Button, Col, Form, FormControl, InputGroup, Row } from 'react-bootstrap'
 import { i18n } from '../../Components/Translates/i18n'
 
 import Modals from '../../Components/SubComponents/Modals'
@@ -22,6 +22,7 @@ export default function PayWithBalance() {
 
 	useEffect(() => {
 		const getBalance = () => {
+			window.scrollTo(0, 0)
 			axios.get(`${process.env.REACT_APP_URL_API}/ContaCorrente/pagarsaldo/token/${token}`).then(success => {
 				if(success.data.status){
 					setSaldo(success.data.dados)
@@ -119,13 +120,13 @@ export default function PayWithBalance() {
 						<Form>
 							<Row>
 								<Col md="3">
-									<Form.Group>
-										<Form.Label>{i18n.t('saldo_td')}</Form.Label>
-										<Form.Control as="select" value={tipo} custom onChange={e => setTipo(e.target.value)}>
+									<Form.Label>{i18n.t('saldo_td')}</Form.Label>
+									<InputGroup>
+										<FormControl as="select" value={tipo} custom onChange={e => setTipo(e.target.value)}>
 											<option>-- {i18n.t('escolha_td')} --</option>
 											<option value='d_credito'>{`${i18n.t('saldo_td')} $: ${saldo.d_credito}`}</option>
-										</Form.Control>
-									</Form.Group>
+										</FormControl>
+									</InputGroup>
 								</Col>
 								<Col md="3">
 									<Form.Group>
@@ -153,7 +154,7 @@ export default function PayWithBalance() {
 			<Modals
 				size="lg"
 				title={`${i18n.t('titulo_msg')}`}
-				contentClassName="bg-light"
+				// contentClassName="bg-dark"
 				show={modalShow}
 				onHide={() => setModalShow(false)}
 			>

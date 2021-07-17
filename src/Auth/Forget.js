@@ -37,13 +37,13 @@ export default function Forget() {
 			{!isAuthenticated() ? 
 				<div style={{minHeight:'87vh'}}>
 					<Container>
-						<Row className="d-flex justify-content-center">
-							<Link to="/"><img src="/logos/logo.png" alt="Logo" className="img-fluid" /></Link>
+						<Row className="d-flex justify-content-center p-3">
+							<Link to="/"><img src="/logos/logo.png" style={{maxHeight: '150px'}} alt="Logo" className="img-fluid" /></Link>
 						</Row>
 						<Form>
 							<Col lg={{span:4, offset:4}} md={{span:6, offset:3}}>
-								<Card>
-									<Row className="d-flex justify-content-center mb-3">
+								<Card >
+									<Row className="d-flex justify-content-center my-3">
 										<Col className="text-center">
 											<h3 style={{textTransform: 'uppercase'}}>{i18n.t('esqueci_td')}</h3>
 										</Col>

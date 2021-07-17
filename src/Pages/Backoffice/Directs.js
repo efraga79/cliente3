@@ -11,6 +11,7 @@ export default function Directs() {
 
 	useEffect(() => {
 		const getDirects = () => {
+			window.scrollTo(0, 0)
 			axios.get(`${process.env.REACT_APP_URL_API}/Indicados/meusIndicados/token/${token}`).then(success => {
 				setDiretos(success.data.res)
 			}).catch(error => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, ProgressBar } from 'react-bootstrap'
+import { ProgressBar } from 'react-bootstrap'
 import NumberFormat from 'react-number-format';
 
 export default function CardStatus (props){
@@ -8,8 +8,8 @@ export default function CardStatus (props){
 			<div className="card avtivity-card">
 				<div className="card-body">
 					<div className="media align-items-center">
-						<span className="activity-icon bgl-success mr-md-4 mr-3">
-							<i className={`fa fa-${props.icon}`}/>
+						<span className={`activity-icon bgl-dark mr-md-4 mr-3`}>
+							<i className={`fa fa-${props.icon} fa-3x text-${props.bg}`} style={{verticalAlign: 'middle'}}/>
 						</span>
 						<div className="media-body">
 							<p className="fs-14 mb-2">{props.nome} {props.subvalor}</p>

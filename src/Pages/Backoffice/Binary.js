@@ -15,6 +15,7 @@ export default function Binary() {
 	
 	useEffect(() => {
 		const getBinarios = () => {
+			window.scrollTo(0, 0)
 			axios.get(`${process.env.REACT_APP_URL_API}/Rede/binario_ajax/token/${token}`).then(success => {
 				setNodes(success.data.dados)
 				setBinarios(success.data.binario)

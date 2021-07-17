@@ -4,7 +4,7 @@ import { Badge, Card, ListGroup } from 'react-bootstrap'
 export default function CardOrder (props){
 	return (
 		<Card bg={props.bg} text={props.color} className="mb-4">
-			<Card.Header className={`bg-${props.status}`}>
+			<Card.Header className={`bg-${props.status} mt-2`}>
 				<h5 className="m-1 text-white">{props.title}</h5>
 				<h4 className="m-1 text-white">{props.subtitle}</h4>
 			</Card.Header>

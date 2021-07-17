@@ -5,6 +5,7 @@ import { i18n } from '../../Components/Translates/i18n'
 
 export default function FinancePassword() {
 	document.title = `${i18n.t('senha_td')} ${i18n.t('financeiro_td')} | ${process.env.REACT_APP_NAME}`
+	window.scrollTo(0, 0)
 	const token = sessionStorage.getItem('token');
 
 	const [updateAlertShow, setUpdateAlertShow] = useState(false);

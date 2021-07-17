@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Container, Button, Row, Col, Table, Form, Badge } from 'react-bootstrap'
+import { Container, Button, Row, Col, Table, Form, FormControl, InputGroup, Badge } from 'react-bootstrap'
 import { FaPlus } from 'react-icons/fa'
 import { i18n } from '../../Components/Translates/i18n'
 
@@ -17,6 +17,7 @@ export default function Call() {
 	
 	useEffect(() => {
 		const getChamados = () => {
+			window.scrollTo(0, 0)
 			axios.get(`${process.env.REACT_APP_URL_API}/Bo/home/token/${token}`).then(success => {
 				setChamado(success.data.chamado)
 			}).catch(error => {
@@ -110,20 +111,20 @@ export default function Call() {
 			<Modals
 				size="lg"
 				title={i18n.t('chamado')}
-				contentClassName="bg-light"
+				// contentClassName="bg-dark"
 				show={modalShow}
 				onHide={() => setModalShow(false)}
 			>
 				<Row>
 					<Col>
 						<Form>
-							<Form.Group>
-								<Form.Control as="select" value={depart} custom onChange={e => setDepart(e.target.value)}>
+							<InputGroup className="mb-3">
+								<FormControl as="select" value={depart} custom onChange={e => setDepart(e.target.value)}>
 									<option>-- {i18n.t('depart')} --</option>
 									<option value="1">{i18n.t('support')}</option>
 									<option value="2">{i18n.t('finan')}</option>
-								</Form.Control>
-							</Form.Group>
+								</FormControl>
+							</InputGroup>
 							<Form.Group>
 								<Form.Control type="text" placeholder={i18n.t('ass_chamado')} onChange={e => setAssunto(e.target.value)} value={assunto}/>
 							</Form.Group>

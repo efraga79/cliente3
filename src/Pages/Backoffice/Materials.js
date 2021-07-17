@@ -15,6 +15,7 @@ export default function Materials() {
 
 	useEffect(() => {
 		const getMaterials = () => {
+			window.scrollTo(0, 0)
 			axios.get(`${process.env.REACT_APP_URL_API}/Arquivos/ver_arquivos/token/${token}`).then(success => {
 				setFiles(success.data.files)
 			}).catch(error => {
@@ -89,7 +90,7 @@ export default function Materials() {
 				<Modals
 					size="lg"
 					title={fileDados.a_nome}
-					contentClassName="bg-light"
+					// contentClassName="bg-dark"
 					show={modalShow}
 					onHide={() => setModalShow(false)}
 				>

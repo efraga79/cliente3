@@ -1,7 +1,6 @@
 import React from 'react'
 import { SidebarData } from './SidebarData'
 import SubMenu from './SubMenu'
-import { Accordion, ListGroup } from 'react-bootstrap'
 
 export default function Sidebar(props) {
 	return (
@@ -13,7 +12,7 @@ export default function Sidebar(props) {
 							return <SubMenu item={item} btn={index} key={index}/>
 						})}
 					</ul>
-					<div class="copyright">
+					<div className="copyright">
 						<p>© {new Date().getFullYear()}. All right reserved </p>
 						<p>{process.env.REACT_APP_NAME}</p>
 					</div>

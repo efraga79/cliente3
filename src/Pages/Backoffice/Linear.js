@@ -12,6 +12,7 @@ export default function Linear() {
 	
 	useEffect(() => {
 		const getLinear = () => {
+			window.scrollTo(0, 0)
 			axios.get(`${process.env.REACT_APP_URL_API}/Indicados/Indiretos/token/${token}`).then(success => {
 				setTreeData(success.data.res)
 			}).catch(error => {
@@ -29,9 +30,9 @@ export default function Linear() {
 		<Container>
 			<Row>
 				<Col xl="12">
-					<div className="card p-2">
-						<h4>{i18n.t('linear_td')}</h4>
-						<DynamicTree key="root" id="root" data={treeData} title={i18n.t('linear_td')} />
+					<h4>{i18n.t('linear_td')}</h4>
+					<div className="card p-2 bg-dark">
+						<DynamicTree key="root" id="root" data={treeData} title={i18n.t('linear_td')}  style={{color: '#fff'}}/>
 					</div>
 				</Col>
 			</Row>

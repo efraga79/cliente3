@@ -14,6 +14,7 @@ export default function Extract() {
 	
 	useEffect(() => {
 		const getExtrato = () => {
+			window.scrollTo(0, 0)
 			axios.get(`${process.env.REACT_APP_URL_API}/ContaCorrente/extrato_ajax/token/${token}`).then(success => {
 				setExtrato(success.data.dados)
 			}).catch(error => {

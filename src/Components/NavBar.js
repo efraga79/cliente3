@@ -5,9 +5,6 @@ import { Link } from 'react-router-dom';
 import * as Fa from 'react-icons/fa'
 import { i18n } from './Translates/i18n';
 
-import { SidebarData } from './Sidebar/SidebarData'
-import SubMenu from './Sidebar/SubMenu';
-
 export default function NavBar() {
 	const token = sessionStorage.getItem('token');
 	const [usuarioy, setUsuarioy] = useState([]);
@@ -52,15 +49,15 @@ export default function NavBar() {
 	
 	return (
 		<>
-			 <div class="nav-header">
-				<Link to="/backoffice/bo" class="brand-logo">
-					<img class="logo-abbr" src="/logos/logo.png" alt=""/>
-					<h4 class="brand-title"> {process.env.REACT_APP_NAME}</h4>
+			 <div className="nav-header">
+				<Link to="/backoffice/bo" className="brand-logo">
+					<img className="logo-abbr" src="/logos/logo.png" alt=""/>
+					<h4 className="brand-title"> {process.env.REACT_APP_NAME}</h4>
 				</Link>
 
-				<div class="nav-control">
-					<div class="hamburger">
-						<span class="line"></span><span class="line"></span><span class="line"></span>
+				<div className="nav-control">
+					<div className="hamburger">
+						<span className="line"></span><span className="line"></span><span className="line"></span>
 					</div>
 				</div>
 			</div>

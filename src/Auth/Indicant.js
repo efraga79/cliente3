@@ -43,13 +43,13 @@ export default function Indicant (props) {
 		<>
 			<div style={{minHeight:'87vh'}}>
 				<Container fluid>
-					<Row className="d-flex justify-content-center">
-						<Link to="/"><img src="/logos/logo.png" alt="Logo" className="img-fluid" /></Link>
+					<Row className="d-flex justify-content-center p-3">
+						<Link to="/"><img src="/logos/logo.png" style={{maxHeight: '150px'}} alt="Logo" className="img-fluid" /></Link>
 					</Row>
 					<Row>
 						<Col lg={{span:6, offset:3}} md={{span:6, offset:3}}>
 							<Card>
-								<Row className="d-flex justify-content-center mb-5">
+								<Row className="d-flex justify-content-center my-3">
 									<Col className="text-center">
 										<h2 style={{textTransform: 'uppercase'}}>{i18n.t('indicante_td')}</h2>
 										<p>{i18n.t('ser_investidor')}</p>
@@ -65,7 +65,7 @@ export default function Indicant (props) {
 										<Button variant="primary" onClick={e => doSearch()}><FaSearch /> {i18n.t('buscar_td')}</Button>
 									</InputGroup.Append>
 								</InputGroup>
-								<Link to="/backoffice/login">{i18n.t('cadastrado_td')}</Link>
+								<Link to="/backoffice/login" className="my-3 mx-auto">{i18n.t('cadastrado_td')}</Link>
 							</Card>
 						</Col>
 					</Row>

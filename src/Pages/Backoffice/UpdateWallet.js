@@ -20,6 +20,7 @@ export default function UpdateWallet() {
 	
 	useEffect(() => {
 		const getWalletView = () => {
+			window.scrollTo(0, 0)
 			axios.get(`${process.env.REACT_APP_URL_API}/ContaCorrente/saque_bitcoin/token/${token}`).then(success => {
 				setCarteira(success.data.carteira)
 			}).catch(error => {

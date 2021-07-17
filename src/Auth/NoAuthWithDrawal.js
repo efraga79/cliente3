@@ -1,8 +1,7 @@
 import React from 'react'
 
 import { Link } from "react-router-dom"
-import { Alert, Container, Form, Col, Row, Card, Badge, Button } from 'react-bootstrap'
-import { i18n } from '../Components/Translates/i18n'
+import { Alert, Container, Col, Row, Card } from 'react-bootstrap'
 
 export default function NoAuthWithDrawal () {
 	document.title = `Withdrawal Authorization | ${process.env.REACT_APP_NAME}`

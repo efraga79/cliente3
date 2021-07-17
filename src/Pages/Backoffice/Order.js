@@ -21,6 +21,7 @@ export default function Order() {
 
 	useEffect(() => {
 		const getOrders = () => {
+			window.scrollTo(0, 0)
 			axios.get(`${process.env.REACT_APP_URL_API}/ContaCorrente/pedidos/token/${token}`).then(success => {
 				if(success.data.status){
 					setOrders(success.data.dados)
@@ -35,6 +36,7 @@ export default function Order() {
 				let local = window.location
 				window.location = local
 			})
+			window.scrollTo(0, 0)
 		}
 		getOrders()
 	}, [token]);
@@ -104,8 +106,8 @@ export default function Order() {
 									return (
 										<Col md="6" xl="4" key={index}>
 											<CardOrder
-											bg="light"
-											color="dark"
+											bg="default"
+											color="light"
 											title={i18n.t('numero_td') + ' ' + i18n.t('pedido_td') + ': ' + item.ped_id}
 											subtitle={i18n.t('desc_td') + ': ' + i18n.t(item.pro_nome)}
 											status={item.fk_status === 3 ? "success" : "danger"}
@@ -159,7 +161,7 @@ export default function Order() {
 			<Modals
 				size="lg"
 				title={`${i18n.t('apagar_td')} ${i18n.t('pedido_td')} ${idApagar}`}
-				contentClassName="bg-light"
+				// contentClassName="bg-dark"
 				show={modalShow}
 				onHide={() => setModalShow(false)}
 			>
@@ -175,7 +177,7 @@ export default function Order() {
 			
 			<Modals
 				size="lg"
-				contentClassName="bg-light"
+				// contentClassName="bg-dark"
 				show={modalWalletShow}
 				onHide={() => setModalWalletShow(false)}
 			>

@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import bin from './css/binario.module.css'
 
-import { Chart } from "react-google-charts";
-
-import { Alert, Row, Col, Button, InputGroup, FormControl, ProgressBar, Table } from 'react-bootstrap';
+import { Alert, Row, Col, Button, InputGroup, FormControl, Table } from 'react-bootstrap';
 import Modals from '../../Components/SubComponents/Modals'
 import MapLeaflet from '../../Components/SubComponents/Leaflet'
 import * as Fa from 'react-icons/fa'
-import NumberFormat from 'react-number-format';
+import { PieChart } from 'react-minimal-pie-chart';
 
 import CardStatus from '../../Components/SubComponents/CardStatus'
 
@@ -20,7 +17,6 @@ export default function Bo() {
 	
 	const [usuarioy, setUsuarioy] = useState([]);
 	const [pais, setPais] = useState([]);
-	const [totaisPorPais, setTotaisPorPais] = useState([]);
 	const [linkDeCadastro, setLinkDeCadastro] = useState('');
 	const [dados, setDados] = useState([]);
 	const [usuariox, setUsuariox] = useState([]);
@@ -43,24 +39,34 @@ export default function Bo() {
 	const [pernaAlertShow, setPernaAlertShow] = useState(false)
 	const [dataPag, setDataPag] = useState('')
 	
-	const [pieOptions, setPieOptions] = useState({})
 	const [pieData, setPieData] = useState([])
-
-	const [donutOptions, setDonutOptions] = useState({})
-	const [donutData, setDonutData] = useState([])
-
-	const [nodes, setNodes] = useState([])
-	const [pernaEsquerda, setPernaEsquerda] = useState()
-	const [pernaDireita, setPernaDireita] = useState()
-
-	const [files, setFiles] = useState([])
+	
+	useEffect(() => {
+		const pieChart = () => {
+			setPieData([
+				{
+					title: i18n.t('completo_percent'),
+					value: parseFloat(cotas?cotas.ct_valor:0),
+					percent: parseFloat(cotas?(cotas.ct_valor/cotas.ct_limite)*100:0).toFixed(0),
+					color: '#0f94c0	',
+				},
+				{
+					title: i18n.t('limite_td'), 
+					value: parseFloat(cotas?cotas.ct_limite:10),
+					percent: parseFloat(cotas?((cotas.ct_limite-cotas.ct_valor)/cotas.ct_limite)*100:100).toFixed(0),
+					color: '#c03c0f',
+				}
+			])
+		}
+		pieChart()
+	},[cotas])
 	
 	useEffect(() => {
 		const getHome = () => {
 			document.title = `${i18n.t('principal_td')} | ${process.env.REACT_APP_NAME}`
+			window.scrollTo(0, 0)
 			axios.get(`${process.env.REACT_APP_URL_API}/Bo/main/token/${token}`).then(success => {
 				setPais(success.data.pais)
-				setTotaisPorPais(success.data.totaisPorPais)
 				setUsuarioy(success.data.usuarioy)
 				setLinkDeCadastro(`${window.location.protocol}//${window.location.host}/${success.data.usuarioy.usu_usuario}`)
 				setLatlng(success.data.latlng)
@@ -93,58 +99,9 @@ export default function Bo() {
 				let local = window.location
 				window.location = local
 			})
-
-			axios.get(`${process.env.REACT_APP_URL_API}/Rede/binario_ajax/token/${token}`).then(success => {
-				setNodes(success.data.dados)
-				setPernaEsquerda(success.data.total.e)
-				setPernaDireita(success.data.total.d)
-			}).catch(error => {
-				console.log(error)
-				sessionStorage.removeItem('token')
-				let local = window.location
-				window.location = local
-			})
-
-			axios.get(`${process.env.REACT_APP_URL_API}/Arquivos/ver_arquivos/token/${token}`).then(success => {
-				setFiles(success.data.files)
-			}).catch(error => {
-				console.log(error)
-				sessionStorage.removeItem('token')
-				let local = window.location
-				window.location = local
-			})
 		}
 		getHome()
 	}, [token]);
-	
-	useEffect(() => {
-		const pieChart = () => {
-			setPieOptions({
-				title: i18n.t('paises_td'),
-				is3D: true, pieStartAngle: 90
-			})
-			let piecdata = [[i18n.t('pais_td'),'total']]
-			totaisPorPais.map((ttpais) => piecdata.push([ttpais.usu_pais, ttpais.total * 5]))
-			setPieData(piecdata)
-
-			setDonutOptions({
-				title: i18n.t('objetivo_td'),
-				is3D: true, 
-				pieStartAngle: 90,
-				pieSliceText: 'value',
-				/* slices: {
-					1: { offset: 0.2 }
-				}, */
-			})
-			setDonutData([
-				['Cota', 'valor'],
-				[i18n.t('completo_percent'), parseFloat(cotas?cotas.ct_valor:0)],
-				[i18n.t('limite_td'), parseFloat(cotas?cotas.ct_limite:10)]
-			])
-
-		}
-		pieChart()
-	},[cotas, totaisPorPais])
 
 	const [copySuccess, setCopySuccess] = useState('');
 	
@@ -163,8 +120,10 @@ export default function Bo() {
 			let idFor = document.getElementById('card'+i)
 			if(idFor){
 				idFor.classList.remove("bg-success");
+				idFor.classList.add("bg-primary");
 			}
 		}
+		document.getElementById('card'+data).classList.remove("bg-primary");
 		document.getElementById('card'+data).classList.add("bg-success");
 		setSelectPlan(data);
 	}
@@ -210,38 +169,25 @@ export default function Bo() {
 			console.log(error)
 		})
 	}
-
-	const novoUser = data => {
-		let user = {
-			username : data
-		}
-		user = JSON.stringify(user)
-		axios.post(`${process.env.REACT_APP_URL_API}/Rede/binario_ajax/token/${token}`, user).then(success => {
-			if(success.data.status){
-				setNodes(success.data.dados)
-			}
-		})
-	}
-	
 	return (
 		<>
 		<section className="section">
 			<div className="container-fluid">
-				<Row style={{marginBottom: 25}}>
+				<Row className="mt-0 mb-4">
 					<Col lg="12">
 						<InputGroup>
 							<InputGroup.Prepend>
-								<Button variant="secondary" onClick={copyLinkToClipboard}>{i18n.t('link_de')}:</Button>
+								<Button variant="primary" onClick={copyLinkToClipboard}>{i18n.t('link_de')}:</Button>
 							</InputGroup.Prepend>
 							<FormControl defaultValue={linkDeCadastro} id="copyLink" readOnly onClick={copyLinkToClipboard}/>
 							<InputGroup.Append>
-								<Button variant="secondary" onClick={copyLinkToClipboard}><Fa.FaCopy /> {copySuccess}</Button>
+								<Button variant="primary" onClick={copyLinkToClipboard}><Fa.FaCopy /> {copySuccess}</Button>
 							</InputGroup.Append>
 						</InputGroup>
 					</Col>
 				</Row>
 
-				<Row className="my-4">
+				<Row>
 					<Col md="6">
 						<CardStatus 
 						bg="info"
@@ -255,7 +201,7 @@ export default function Bo() {
 					</Col>
 					<Col md="6">
 						<CardStatus
-						bg="success"
+						bg="warning"
 						valor={dados.d_indicados}
 						nome={i18n.t('total_td')}
 						subvalor={i18n.t('direto_td')}
@@ -273,11 +219,11 @@ export default function Bo() {
 					</Col>
 					<Col md="6">
 						<CardStatus 
-						bg="warning"
+						bg={usuariox.alterar === false?'success':'danger'}
 						valor={usuariox.alterar === false?i18n.t('sim_td'):i18n.t('nao_td')} 
 						nome={i18n.t('ativo_td')}
 						subvalor={i18n.t('sys_tb')}
-						icon="thumbs-o-up" />
+						icon={usuariox.alterar === false?'thumbs-o-up':'thumbs-o-down'} />
 					</Col>
 					<Col md="6">
 						<CardStatus bg="success" valor={money.entrada} money="$ " nome={i18n.t('entrada_et')} subvalor={i18n.t('ate_hj')} icon="money" />
@@ -286,29 +232,48 @@ export default function Bo() {
 						<CardStatus bg="primary" valor={totalUsu} nome={i18n.t('tb_usuarios')} subvalor={i18n.t('tb_usando_sys')} icon="users" />
 					</Col>
 				</Row>
-				<Row className="my-4">
-					<Col md="12">
+				<Row>
+					<Col md="7">
 						<div className="card">
-							<div class="card-header d-sm-flex d-block pb-0 border-0">
-								<div class="mr-auto pr-3 mb-sm-0 mb-3">
-									<h4 class="text-light fs-20">{usuarioy.usu_pais} - Total: {pais} {i18n.t('paises_td')}</h4>
+							<div className="card-header d-sm-flex d-block pb-0 border-0">
+								<div className="mr-auto pr-3 mb-sm-0 mb-3">
+									<h4 className="text-light fs-20">{usuarioy.usu_pais} - Total: {pais} {i18n.t('paises_td')}</h4>
 								</div>
 							</div>
-							<div className="card-cody py-0">
-								<Row>
-									<Col md="6">
-										<Chart
-											width={'fit-content'}
-											height={'300px'}
-											chartType="PieChart"
-											data={donutData}
-											options={donutOptions}
-										/>
-									</Col>
-									<Col md="6">
-										<MapLeaflet latlng={latlng}></MapLeaflet>
-									</Col>
-								</Row>
+							<div className="card-body">
+								<MapLeaflet latlng={latlng}></MapLeaflet>
+							</div>
+						</div>
+					</Col>
+					<Col md="5">
+						{alertoitenta ?
+							<Alert variant="warning">
+								<strong>{i18n.t('limite_80')}</strong><br/>
+								<Link to="/backoffice/order"><Button variant="warning">{i18n.t('pedido_td')}</Button></Link>
+							</Alert>
+						: ''}
+						<div className="card">
+							<div className="card-header d-sm-flex d-block pb-0 border-0">
+								<div className="mr-auto pr-3 mb-sm-0 mb-3">
+									<h4 className="text-light fs-20">{i18n.t('objetivo_td')}</h4>
+								</div>
+							</div>
+							<div className="card-body">
+								<h5>{i18n.t('valor_td')} {cotas? new Intl.NumberFormat('us-US', { style: 'currency', currency: 'USD' }).format(cotas.ct_valor):0} ({i18n.t('limite_td')} {cotas?new Intl.NumberFormat('us-US', { style: 'currency', currency: 'USD' }).format(cotas.ct_limite):0})</h5>
+								{pieData?
+									<PieChart 
+										data={pieData}
+										radius={PieChart.defaultProps.radius - 7}
+										segmentsShift={(index) => (index === 0 ? 7 : 0.5)}
+										lineWidth={50}
+										style={{ maxHeight: '250px' }}
+										label={({ dataEntry }) => `${dataEntry.title}: ${dataEntry.percent}%`}
+										labelStyle={{
+											fontSize: '8px',
+											textShadow: '0px 0px 2px #fff'
+										}}
+									/>
+								:''}
 							</div>
 						</div>
 					</Col>
@@ -325,31 +290,19 @@ export default function Bo() {
 				: ''}
 				
 				{usuariox.alterar && ativaAlterarPlano ?
-					<Row className="my-4">
+					<Row>
 						<Col xs="12">
-							<h4>{i18n.t('plano_main')}</h4>
-							<Button variant="primary" size="lg" block onClick={() => setModalShow(true)}>{i18n.t('plano_main2')}</Button>
+							<div className="p-2 card">
+								<h4>{i18n.t('plano_main')}</h4>
+								<Button variant="primary" size="lg" block onClick={() => setModalShow(true)}>{i18n.t('plano_main2')}</Button>
+							</div>
 						</Col>
 					</Row>
 				: ''}
 
-				<Row className="my-4">
-					<Col>
-						<div className="card border-primary p-2">
-							<h4>{i18n.t('valor_td')} {cotas? new Intl.NumberFormat('us-US', { style: 'currency', currency: 'USD' }).format(cotas.ct_valor):0} ({i18n.t('limite_td')} {cotas?new Intl.NumberFormat('us-US', { style: 'currency', currency: 'USD' }).format(cotas.ct_limite):0})</h4>
-							{alertoitenta ?
-								<Alert variant="warning">
-									<h4><strong>{i18n.t('limite_80')}</strong></h4>
-								</Alert>
-							: ''}
-							<ProgressBar animated now={cotas?cotas.perc:0} label={cotas?`${parseFloat(cotas.perc).toFixed(1)}%`:0} style={{height: 30, fontSize: 20, fontWeight: 'bold'}}/>
-						</div>
-					</Col>
-				</Row>
-
-				<Row className="my-4">
+				<Row>
 					<Col md="6">
-						<div className="card border-primary p-2">
+						<div className="p-2 card border-primary">
 							<h4>UPGRADE</h4>
 							{upgradeAlertShow ? 
 								<Alert variant="success" onClose={() => setUpgradeAlertShow(false)} dismissible>
@@ -361,7 +314,7 @@ export default function Bo() {
 									<strong>{i18n.t('erro_td')}!</strong> {i18n.t('pedido_td')} {i18n.t('pendente_td')}. <Link to="/backoffice/order"><Button variant="danger">{i18n.t('pedido_td')}</Button></Link>
 								</Alert>
 							:''}
-							<InputGroup>
+							<InputGroup> 
 								<FormControl as="select" value={selectUpgradePlan} custom onChange={e => setSelectUpgradePlan(e.target.value)}>
 									<option>-- {i18n.t('escolha_td')} {i18n.t('plano_td')} --</option>
 									{listPlanos.map((opt, index) => {
@@ -369,13 +322,13 @@ export default function Bo() {
 									})}
 								</FormControl>
 								<InputGroup.Append>
-									<Button variant="dark" onClick={() => newPlan()}>Upgrade</Button>
+									<Button variant="primary" onClick={() => newPlan()}>Upgrade</Button>
 								</InputGroup.Append>
 							</InputGroup>
 						</div>
 					</Col>
 					<Col md="6">
-						<div className="card border-primary p-2">
+						<div className="p-2 card border-primary">
 							<h4>{i18n.t('perna_td')} {i18n.t('pref_td')}</h4>
 							{pernaAlertShow ?
 								<Alert variant="success" onClose={() => setPernaAlertShow(false)} dismissible>
@@ -384,18 +337,18 @@ export default function Bo() {
 							:''}
 							<Row>
 								<Col xs="6">
-									<Button variant={legCheck === 'e'?'success':'secondary'} block onClick={() => selectPerna('e')} id="pernae">{i18n.t('perna_td')} {i18n.t('esquerda_td')}</Button>
+									<Button variant={legCheck === 'e'?'success':'dark'} block onClick={() => selectPerna('e')} id="pernae">{i18n.t('perna_td')} {i18n.t('esquerda_td')}</Button>
 								</Col>
 								<Col xs="6">
-									<Button variant={legCheck === 'd'?'success':'secondary'} block onClick={() => selectPerna('d')} id="pernad">{i18n.t('perna_td')} {i18n.t('direita_td')}</Button>
+									<Button variant={legCheck === 'd'?'success':'dark'} block onClick={() => selectPerna('d')} id="pernad">{i18n.t('perna_td')} {i18n.t('direita_td')}</Button>
 								</Col>
 							</Row>
 						</div>
 					</Col>
 				</Row>
-				<Row className="my-4">
+				<Row>
 					<Col>
-						<div className="card border-primary p-2">
+						<div className="p-2 card border-primary">
 							<h4>{i18n.t('dados_td')}</h4>
 							<Table responsive striped bordered hover>
 								<thead>
@@ -427,15 +380,16 @@ export default function Bo() {
 		<Modals
 			size="lg"
 			title={i18n.t('escolha_plano')}
-			contentClassName="bg-light"
+			// contentClassName="bg-dark"
 			show={modalShow}
 			onHide={() => setModalShow(false)}
 		>
+			<Button variant="primary mb-3" size="lg" block onClick={() => alterPlan()}>{i18n.t('alterar_td')}</Button>
 			<Row>
 				{planAlterar.map((el, index) => {
 					return (
 						<Col md="4" key={index} onClick={() => classPlan(el.bn_id)}>
-							<div className="card border-primary p-2 text-center" id={`card${el.bn_id}`}>
+							<div className="p-2 text-center card bg-primary" id={`card${el.bn_id}`} style={{cursor: 'pointer'}}>
 								<h4 className="m-1">{el.bn_nome}</h4>
 								<h3 className="m-1">{el.carac_valor}</h3>
 							</div>
